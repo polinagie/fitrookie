@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitRookie – Wynajem sprzętu sportowego</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',sans-serif;color:#1a1a1a;background:#fff}
+  a{text-decoration:none;color:inherit}
+
+  /* NAV */
+  nav{background:#fff;border-bottom:2px solid #f97316;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100}
+  .logo{font-size:22px;font-weight:700;color:#f97316}
+  .logo span{color:#1a1a1a}
+  .nav-links{display:flex;gap:28px;font-size:15px;font-weight:500}
+  .nav-links a:hover{color:#f97316}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%);padding:80px 5% 60px;display:flex;align-items:center;gap:48px;flex-wrap:wrap}
+  .hero-text h1{font-size:48px;font-weight:800;line-height:1.1;color:#1a1a1a}
+  .hero-text h1 span{color:#f97316}
+  .hero-text p{margin:18px 0 32px;font-size:18px;color:#555;max-width:480px;line-height:1.6}
+  .btn{display:inline-block;background:#f97316;color:#fff;padding:14px 32px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s}
+  .btn:hover{background:#ea6c0a}
+  .btn-outline{background:transparent;border:2px solid #f97316;color:#f97316;margin-left:12px}
+  .btn-outline:hover{background:#fff7ed}
+  .hero-badges{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+  .badge{background:#fff;border:1px solid #fed7aa;color:#c2410c;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500}
+  .hero-img{flex:1;min-width:280px;display:flex;justify-content:center}
+  .hero-img svg{max-width:360px;width:100%}
+
+  /* STATS */
+  .stats{background:#f97316;color:#fff;padding:32px 5%;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;text-align:center}
+  .stat-num{font-size:32px;font-weight:800}
+  .stat-label{font-size:13px;opacity:.85;margin-top:4px}
+
+  /* SECTIONS */
+  section{padding:64px 5%}
+  section h2{font-size:32px;font-weight:700;margin-bottom:8px}
+  section .sub{color:#666;margin-bottom:40px;font-size:16px}
+
+  /* SPRZĘT */
+  #sprzet{background:#fff}
+  .equipment-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+  .eq-card{border:1.5px solid #f0f0f0;border-radius:12px;overflow:hidden;transition:transform .2s,border-color .2s}
+  .eq-card:hover{transform:translateY(-4px);border-color:#f97316}
+  .eq-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:64px;background:#fff7ed}
+  .eq-body{padding:18px}
+  .eq-body h3{font-size:17px;font-weight:700;margin-bottom:6px}
+  .eq-body p{font-size:14px;color:#666;line-height:1.5;margin-bottom:14px}
+  .eq-pricing{display:flex;gap:8px;flex-wrap:wrap}
+  .price-tag{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;padding:4px 10px;border-radius:6px;font-size:13px;font-weight:600}
+
+  /* GALERIA */
+  #galeria{background:#f9fafb}
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .gal-item{border-radius:10px;overflow:hidden;aspect-ratio:4/3;background:#e5e7eb;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:48px;cursor:pointer;transition:transform .2s}
+  .gal-item:hover{transform:scale(1.03)}
+  .gal-label{font-size:13px;color:#6b7280;margin-top:8px;font-size:12px}
+  .gal-item.accent{background:#fff7ed}
+  .gal-item.accent2{background:#fef3c7}
+  .gal-item.accent3{background:#dcfce7}
+  .gal-item.accent4{background:#dbeafe}
+  .gal-item.accent5{background:#f3e8ff}
+  .gal-item.accent6{background:#ffe4e6}
+
+  /* KONTAKT */
+  #kontakt{background:#fff}
+  .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  @media(max-width:700px){.contact-wrap{grid-template-columns:1fr}}
+  .contact-info h3{font-size:20px;font-weight:700;margin-bottom:20px}
+  .info-row{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+  .info-icon{width:40px;height:40px;background:#fff7ed;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .info-text strong{display:block;font-size:14px;margin-bottom:2px}
+  .info-text span{color:#666;font-size:14px}
+  .contact-form{background:#f9fafb;padding:28px;border-radius:12px;border:1.5px solid #f0f0f0}
+  .contact-form h3{font-size:20px;font-weight:700;margin-bottom:20px}
+  .form-group{margin-bottom:16px}
+  .form-group label{display:block;font-size:14px;font-weight:500;margin-bottom:6px;color:#374151}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:15px;font-family:inherit;background:#fff;transition:border-color .2s;outline:none}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#f97316}
+  .form-group textarea{resize:vertical;min-height:100px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .submit-btn{width:100%;background:#f97316;color:#fff;border:none;padding:13px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s}
+  .submit-btn:hover{background:#ea6c0a}
+  .success-msg{display:none;background:#dcfce7;border:1px solid #86efac;color:#166534;padding:12px 16px;border-radius:8px;font-size:14px;margin-top:12px;text-align:center}
+
+  /* FOOTER */
+  footer{background:#1a1a1a;color:#ccc;padding:32px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  footer .logo{color:#f97316}
+  footer span{font-size:13px}
+
+  @media(max-width:640px){
+    .hero-text h1{font-size:34px}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Fit<span>Rookie</span></div>
+  <div class="nav-links">
+    <a href="#sprzet">Sprzęt</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <a class="btn" href="#kontakt">Zarezerwuj</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Wynajem rowerów<br>i sprzętu<br><span>dla całej rodziny</span></h1>
+    <p>Rowery, przyczepki rowerowe i akcesoria dziecięce. Sprawdź naszą ofertę i wyjedź na szlak już dziś!</p>
+    <div>
+      <a class="btn" href="#sprzet">Zobacz ofertę</a>
+      <a class="btn btn-outline" href="#kontakt">Zarezerwuj termin</a>
+    </div>
+    <div class="hero-badges">
+      <span class="badge">✓ Dobrze utrzymany sprzęt</span>
+    </div>
+  </div>
+  <div class="hero-img">
+    <svg viewBox="0 0 340 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background circle -->
+      <circle cx="170" cy="130" r="120" fill="#fed7aa" opacity=".4"/>
+      <!-- Bicycle frame -->
+      <g stroke="#f97316" stroke-width="4" stroke-linecap="round">
+        <!-- Rear wheel -->
+        <circle cx="80" cy="185" r="45" stroke="#1a1a1a" stroke-width="3.5" fill="none"/>
+        <!-- Front wheel -->
+        <circle cx="260" cy="185" r="45" stroke="#1a1a1a" stroke-width="3.5" fill="none"/>
+        <!-- Frame: chain stay -->
+        <line x1="80" y1="185" x2="170" y2="130"/>
+        <!-- Frame: seat tube -->
+        <line x1="170" y1="130" x2="155" y2="175"/>
+        <!-- Frame: down tube -->
+        <line x1="170" y1="130" x2="230" y2="155"/>
+        <!-- Frame: top tube -->
+        <line x1="170" y1="130" x2="240" y2="108"/>
+        <!-- Fork -->
+        <line x1="240" y1="108" x2="260" y2="185"/>
+        <!-- Seat stay -->
+        <line x1="155" y1="175" x2="80" y2="185"/>
+        <!-- Chain stay 2 -->
+        <line x1="155" y1="175" x2="230" y2="155"/>
+        <!-- Handlebar -->
+        <line x1="240" y1="108" x2="252" y2="88"/>
+        <line x1="245" y1="88" x2="262" y2="93"/>
+        <!-- Seat post -->
+        <line x1="170" y1="130" x2="163" y2="110"/>
+        <line x1="156" y1="107" x2="172" y2="107"/>
+      </g>
+      <!-- Spokes rear -->
+      <g stroke="#888" stroke-width="1" opacity=".5">
+        <line x1="80" y1="140" x2="80" y2="185"/>
+        <line x1="35" y1="185" x2="80" y2="185"/>
+        <line x1="50" y1="153" x2="80" y2="185"/>
+        <line x1="110" y1="153" x2="80" y2="185"/>
+        <line x1="125" y1="185" x2="80" y2="185"/>
+        <line x1="110" y1="218" x2="80" y2="185"/>
+        <line x1="50" y1="218" x2="80" y2="185"/>
+        <line x1="80" y1="230" x2="80" y2="185"/>
+      </g>
+      <!-- Spokes front -->
+      <g stroke="#888" stroke-width="1" opacity=".5">
+        <line x1="260" y1="140" x2="260" y2="185"/>
+        <line x1="215" y1="185" x2="260" y2="185"/>
+        <line x1="230" y1="153" x2="260" y2="185"/>
+        <line x1="290" y1="153" x2="260" y2="185"/>
+        <line x1="305" y1="185" x2="260" y2="185"/>
+        <line x1="290" y1="218" x2="260" y2="185"/>
+        <line x1="230" y1="218" x2="260" y2="185"/>
+        <line x1="260" y1="230" x2="260" y2="185"/>
+      </g>
+      <!-- Trailer hitch hint -->
+      <g opacity=".7">
+        <rect x="24" y="172" width="38" height="24" rx="5" fill="#fed7aa" stroke="#f97316" stroke-width="2"/>
+        <circle cx="43" cy="184" r="4" fill="#f97316"/>
+        <line x1="62" y1="184" x2="80" y2="185" stroke="#f97316" stroke-width="2.5"/>
+        <text x="43" y="196" text-anchor="middle" font-size="7" fill="#c2410c" font-weight="700">PRZYCZEPKA</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div><div class="stat-num">200+</div><div class="stat-label">zadowolonych rodzin</div></div>
+  <div><div class="stat-num">3</div><div class="stat-label">rodzaje sprzętu</div></div>
+  <div><div class="stat-num">7</div><div class="stat-label">dni w tygodniu</div></div>
+  <div><div class="stat-num">od 30 zł</div><div class="stat-label">za dobę</div></div>
+</div>
+
+<!-- SPRZĘT -->
+<section id="sprzet">
+  <h2>Nasz sprzęt</h2>
+  <p class="sub">Wszystko, czego potrzebujesz na rodzinną przygodę rowerową</p>
+  <div class="equipment-grid">
+
+    <div class="eq-card">
+      <div class="eq-img">🚲</div>
+      <div class="eq-body">
+        <h3>Rower miejski / trekkingowy</h3>
+        <p>Wygodne rowery 26"–28" dla dorosłych. 7-biegowe, z koszem lub bagażnikiem. Idealne do miasta i szlaków.</p>
+        <div class="eq-pricing">
+          <span class="price-tag">2h – 25 zł</span>
+          <span class="price-tag">cały dzień – 60 zł</span>
+          <span class="price-tag">2 dni – 100 zł</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-img">🚵</div>
+      <div class="eq-body">
+        <h3>Rower górski (MTB)</h3>
+        <p>Rowery z amortyzacją do wymagających tras. Rozmiary: S, M, L. Opony terenowe, hamulce tarczowe.</p>
+        <div class="eq-pricing">
+          <span class="price-tag">2h – 35 zł</span>
+          <span class="price-tag">cały dzień – 80 zł</span>
+          <span class="price-tag">2 dni – 140 zł</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-img">🚴</div>
+      <div class="eq-body">
+        <h3>Rower dziecięcy</h3>
+        <p>Rowery 16" i 20" dla dzieci w wieku 4–10 lat. Lekkie, kolorowe, z kółkami pomocniczymi (opcja).</p>
+        <div class="eq-pricing">
+          <span class="price-tag">2h – 15 zł</span>
+          <span class="price-tag">cały dzień – 30 zł</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-img">🛒</div>
+      <div class="eq-body">
+        <h3>Przyczepka rowerowa</h3>
+        <p>Dwuosobowe przyczepki dla dzieci do lat 6. Pasy bezpieczeństwa, osłona przeciwdeszczowa w komplecie.</p>
+        <div class="eq-pricing">
+          <span class="price-tag">cały dzień – 50 zł</span>
+          <span class="price-tag">2 dni – 80 zł</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-img">👶</div>
+      <div class="eq-body">
+        <h3>Fotelik rowerowy</h3>
+        <p>Foteliki tylne do montażu na bagażniku. Dla dzieci 9 mies.–6 lat (maks. 22 kg). Regulowane pasy i podnóżki.</p>
+        <div class="eq-pricing">
+          <span class="price-tag">cały dzień – 20 zł</span>
+          <span class="price-tag">2 dni – 35 zł</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-img">⛑️</div>
+      <div class="eq-body">
+        <h3>Akcesoria i wyposażenie</h3>
+        <p>Kaski dla dorosłych i dzieci, zapięcia, pompki, sakwy, apteczki. Większość akcesoriów wliczona w cenę wynajmu.</p>
+        <div class="eq-pricing">
+          <span class="price-tag">kask – gratis</span>
+          <span class="price-tag">sakwa – 10 zł/dzień</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- KONTAKT -->
+<section id="kontakt">
+  <h2>Kontakt i rezerwacja</h2>
+  <p class="sub">Skontaktuj się z nami lub wypełnij formularz – </p>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>Znajdź nas</h3>
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div class="info-text"><strong>Adres</strong><span>ul. Przykładowa 12, Kraków</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📞</div>
+        <div class="info-text"><strong>Telefon</strong><span>+48 600 000 000</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">✉️</div>
+        <div class="info-text"><strong>E-mail</strong><span>kontakt@pedalrent.pl</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🕐</div>
+        <div class="info-text"><strong>Godziny otwarcia</strong><span>Pon–Pt: 8:00–18:00<br>Sob–Ndz: 8:00–20:00</span></div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>Zarezerwuj sprzęt</h3>
+      <div class="form-group">
+        <label>Imię i nazwisko</label>
+        <input type="text" placeholder="Jan Kowalski" id="name">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="tel" placeholder="+48 600 000 000" id="phone">
+        </div>
+        <div class="form-group">
+          <label>Data</label>
+          <input type="date" id="date">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Sprzęt</label>
+        <select id="equipment">
+          <option value="">-- wybierz --</option>
+          <option>Rower miejski / trekkingowy</option>
+          <option>Rower górski (MTB)</option>
+          <option>Rower dziecięcy</option>
+          <option>Przyczepka rowerowa</option>
+          <option>Fotelik rowerowy</option>
+          <option>Kilka pozycji – opiszę poniżej</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Uwagi / pytania</label>
+        <textarea placeholder="Np. liczba osób, czas wynajmu, rozmiary..." id="msg"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitForm()">Wyślij zapytanie</button>
+      <div class="success-msg" id="successMsg">✓ Dziękujemy! Odezwiemy się wkrótce.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">Pedal<span style="color:#ccc">Rent</span></div>
+  <span>© 2025 PedalRent – Wynajem sprzętu rowerowego</span>
+  <span style="font-size:13px">Kraków</span>
+</footer>
+
+<script>
+function submitForm(){
+  const n=document.getElementById('name').value.trim();
+  const p=document.getElementById('phone').value.trim();
+  const d=document.getElementById('date').value;
+  const e=document.getElementById('equipment').value;
+  if(!n||!p||!d||!e){alert('Proszę wypełnić wszystkie wymagane pola.');return;}
+  document.getElementById('successMsg').style.display='block';
+  document.getElementById('name').value='';
+  document.getElementById('phone').value='';
+  document.getElementById('date').value='';
+  document.getElementById('equipment').value='';
+  document.getElementById('msg').value='';
+}
+</script>
+</body>
+</html>
